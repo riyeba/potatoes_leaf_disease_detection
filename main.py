@@ -54,7 +54,7 @@ async def predict(file: UploadFile):
     predictions= MODEL.predict(image_batch)
     predicted_class= CLASS_NAMES[np.argmax(predictions[0])]
     confidence_level=np.max(predictions[0])
-    logger.debug(predicted_class,confidence_level,image_batch)
+    # logger.debug(predicted_class,confidence_level,image_batch)
     return {"class": predicted_class,"Confidence" : float(confidence_level)}
     
 

@@ -47,7 +47,7 @@ def read_file_as_image(data)-> np.ndarray:
    image= np.array(Image.open(BytesIO(data))) 
    return image
 
-@app.post("/predict/")
+@app.post("/predict")
 async def predict(file: UploadFile):
     imagearray = read_file_as_image(await file.read())
     image_batch=np.expand_dims(imagearray,0)

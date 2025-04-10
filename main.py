@@ -15,11 +15,12 @@ origins = [
     "http://localhost:5173",
     "https://potatoes-leaf-disease-detection.onrender.com/predict"
     "https://potatoleafdiseasedetectionapp.vercel.app/"
+    "https://potatoes-leaf-disease-detection.onrender.com"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://potatoes-leaf-disease-detection.onrender.com/predict","http://localhost:5173", "https://potatoleafdiseasedetectionapp.vercel.app/"],  # Allow all origins
+    allow_origins=["https://potatoes-leaf-disease-detection.onrender.com/predict","http://localhost:5173", "https://potatoleafdiseasedetectionapp.vercel.app/", "https://potatoes-leaf-disease-detection.onrender.com"],  # Allow all origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

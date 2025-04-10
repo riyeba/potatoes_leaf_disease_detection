@@ -32,7 +32,7 @@ endpoint="http://localhost:8501/v1/models/potatoes_disease:predict"
 
 
 
-MODEL = tf.keras.models.load_model("models")    
+MODEL = tf.keras.models.load_model("potato.h5")    
 CLASS_NAMES=["Early Blight", "Late Blight", "Healthy"] 
 
 # @app.get("/ping")

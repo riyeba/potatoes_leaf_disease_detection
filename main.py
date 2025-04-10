@@ -18,7 +18,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"], 
+    allow_origins=["*"],  # Allow all origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,13 +27,15 @@ app.add_middleware(
 
 
 # write the end point aafter ts serving set up#"
-endpoint="http://localhost:8501/v1/models/potatoes_disease:predict"
+# endpoint="http://localhost:8501/v1/models/potatoes_disease:predict"
+endpoint = "https://potatoes-leaf-disease-detection.onrender.com/predict"
+
 
 
 
 
 MODEL = tf.keras.models.load_model("potato.h5")    
-CLASS_NAMES=["Early Blight", "Late Blight", "Healthy"] 
+CLASS_NAMES=["Early Blight", "Late Blight", "Healthy"]  
 
 # @app.get("/ping")
 # async def ping():

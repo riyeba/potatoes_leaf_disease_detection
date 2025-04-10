@@ -32,8 +32,8 @@ endpoint="http://localhost:8501/v1/models/potatoes_disease:predict"
 
 
 
-MODEL = tf.keras.models.load_model(r"saved_models\1")    
-CLASS_NAMES=["Early Blight", "Late Blight", "Healthy"]
+MODEL = tf.keras.models.load_model("api\models")    
+CLASS_NAMES=["Early Blight", "Late Blight", "Healthy"] 
 
 # @app.get("/ping")
 # async def ping():
@@ -42,7 +42,7 @@ logger = logging.getLogger('uvicorn.error')
 logger.setLevel(logging.DEBUG)
 
 def read_file_as_image(data)-> np.ndarray:
-   image= np.array(Image.open(BytesIO(data)))
+   image= np.array(Image.open(BytesIO(data))) 
    return image
 
 @app.post("/predict/")

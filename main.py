@@ -12,8 +12,9 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "https://potatoes-leaf-disease-detection.onrender.com",  # Replace with actual frontend URL
-    "http://localhost:5173"  # For local dev, if applicable
+    "https://potatoes-leaf-disease-detection.onrender.com",  
+    "http://localhost:5173", 
+    "https://potatoleafdiseasedetectionapp.vercel.app"
 ]
 
 

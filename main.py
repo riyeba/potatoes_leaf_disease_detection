@@ -38,7 +38,7 @@ logger.setLevel(logging.DEBUG)
 def read_file_as_image(data) -> np.ndarray:
     image = Image.open(BytesIO(data)).convert("RGB")
     image = image.resize((256, 256))  # 🔧 Resize to match model input
-    image = np.array(image) / 255.0   # Optional: normalize if model was trained this way
+    # image = np.array(image) / 255.0   # Optional: normalize if model was trained this way
     return image
 
 @app.post("/predict")

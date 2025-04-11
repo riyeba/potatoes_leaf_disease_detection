@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "https://potatoes-leaf-disease-frontend.onrender.com",  # Replace with actual frontend URL
+    "https://potatoes-leaf-disease-detection.onrender.com",  # Replace with actual frontend URL
     "http://localhost:5173"  # For local dev, if applicable
 ]
 

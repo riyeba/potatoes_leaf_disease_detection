@@ -1,6 +1,7 @@
-from fastapi import FastAPI
-import uvicorn
+
+
 from fastapi import FastAPI, File, UploadFile
+import uvicorn
 import logging
 import numpy as np
 from io import BytesIO
@@ -8,60 +9,57 @@ from PIL import Image
 import tensorflow as tf
 from fastapi.middleware.cors import CORSMiddleware
 
-
-app=FastAPI()
+app = FastAPI()
 
 origins = [
-    "http://localhost:5173",
-    "https://potatoes-leaf-disease-detection.onrender.com/predict"
-    "https://potatoleafdiseasedetectionapp.vercel.app/"
-    "https://potatoes-leaf-disease-detection.onrender.com"
+    "https://potatoes-leaf-disease-frontend.onrender.com",  # Replace with actual frontend URL
+    "http://localhost:5173"  # For local dev, if applicable
 ]
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://potatoes-leaf-disease-detection.onrender.com/predict","http://localhost:5173", "https://potatoleafdiseasedetectionapp.vercel.app/", "https://potatoes-leaf-disease-detection.onrender.com"],  # Allow all origins
+    allow_origins=origins, 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Optional: TS serving endpoint (not used in this local model prediction)
+# endpoint = "http://localhost:8501/v1/models/potatoes_disease:predict"
 
+# Load model and class names
+MODEL = tf.keras.models.load_model("potato.h5")
+CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
-# write the end point aafter ts serving set up#"
-# endpoint="http://localhost:8501/v1/models/potatoes_disease:predict"
-endpoint = "https://potatoes-leaf-disease-detection.onrender.com/predict"
-
-
-
-
-
-MODEL = tf.keras.models.load_model("potato.h5")    
-CLASS_NAMES=["Early Blight", "Late Blight", "Healthy"]  
-
-# @app.get("/ping")
-# async def ping():
-#     return "hello Taiwo, you wrote your first fast api code. Congratulations!"
 logger = logging.getLogger('uvicorn.error')
 logger.setLevel(logging.DEBUG)
 
-def read_file_as_image(data)-> np.ndarray:
-   image= np.array(Image.open(BytesIO(data))) 
-   return image
+def read_file_as_image(data) -> np.ndarray:
+    image = Image.open(BytesIO(data)).convert("RGB")
+    image = image.resize((256, 256))  # 🔧 Resize to match model input
+    image = np.array(image) / 255.0   # Optional: normalize if model was trained this way
+    return image
 
 @app.post("/predict")
-async def predict(file: UploadFile):
-    imagearray = read_file_as_image(await file.read())
-    image_batch=np.expand_dims(imagearray,0)
-    predictions= MODEL.predict(image_batch)
-    predicted_class= CLASS_NAMES[np.argmax(predictions[0])]
-    confidence_level=np.max(predictions[0])
-    # logger.debug(predicted_class,confidence_level,image_batch)
-    return {"class": predicted_class,"Confidence" : float(confidence_level)}
+async def predict(file: UploadFile = File(...)):
+    image_array = read_file_as_image(await file.read())
+    image_batch = np.expand_dims(image_array, 0)  # (1, 256, 256, 3)
+    
+    predictions = MODEL.predict(image_batch)
+    predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
+    confidence_level = np.max(predictions[0])
+    
+    logger.debug(f"Prediction: {predicted_class}, Confidence: {confidence_level}")
+    
+    return {
+        "class": predicted_class,
+        "confidence": float(confidence_level)
+    }
+
+
+
     
 
-if __name__ =="__main__":
-    uvicorn.run(app,host='localhost',port=8000)
-    
-#convert to numpy array#
+
 

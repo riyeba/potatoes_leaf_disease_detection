@@ -37,9 +37,12 @@ logger = logging.getLogger('uvicorn.error')
 logger.setLevel(logging.DEBUG)
 
 def read_file_as_image(data) -> np.ndarray:
-    image = Image.open(BytesIO(data)).convert("RGB")
-    image = image.resize((256, 256))  # 🔧 Resize to match model input
-    image = np.array(image) / 255.0   # Optional: normalize if model was trained this way
+    # Open the image from bytes data
+    image = Image.open(BytesIO(data))
+    # Resize the image to (256, 256)
+    image = image.resize((256, 256), Image.Resampling.LANCZOS)
+    # Convert the image to a NumPy array
+    image = np.array(image)
     return image
 
 @app.post("/predict")

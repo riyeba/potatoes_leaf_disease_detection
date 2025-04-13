@@ -30,7 +30,7 @@ app.add_middleware(
 # endpoint = "http://localhost:8501/v1/models/potatoes_disease:predict"
 
 # Load model and class names
-MODEL = tf.keras.models.load_model("potato.h5")
+MODEL = tf.keras.models.load_model("potatoestai.h5")
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
 logger = logging.getLogger('uvicorn.error')
@@ -38,7 +38,7 @@ logger.setLevel(logging.DEBUG)
 
 def read_file_as_image(data) -> np.ndarray:
     # Open the image from bytes data
-    image = Image.open(BytesIO(data))
+    image = Image.open(BytesIO(data)).convert("RGB")
     # Resize the image to (256, 256)
     image = image.resize((256, 256), Image.Resampling.LANCZOS)
     # Convert the image to a NumPy array

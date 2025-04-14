@@ -30,7 +30,7 @@ app.add_middleware(
 # endpoint = "http://localhost:8501/v1/models/potatoes_disease:predict"
 
 # Load model and class names
-MODEL = tf.keras.models.load_model("potatoestai.h5")
+MODEL = tf.keras.models.load_model("potato.h5")
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
 logger = logging.getLogger('uvicorn.error')
